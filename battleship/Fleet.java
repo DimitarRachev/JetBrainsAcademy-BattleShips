@@ -3,14 +3,14 @@ package battleship;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Ships {
+public class Fleet {
     Set<Ship> ships;
 
-    public Ships() {
+    public Fleet() {
         this.ships = new HashSet<>();
     }
 
-   void addShip(Ship ship){
+    void addShip(Ship ship){
         ships.add(ship);
     }
 
@@ -18,7 +18,7 @@ public class Ships {
         for (Ship ship : ships) {
             if (ship.isSunk(coordinates)) {
                 ships.remove(ship);
-               return true;
+                return true;
             }
         }
         return false;

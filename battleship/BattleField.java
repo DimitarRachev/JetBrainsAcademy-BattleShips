@@ -12,15 +12,17 @@ import java.util.Set;
 public class BattleField {
     private String[][] battleField;
     private String[][] fogOfWar;
+    private String[][] toDisplay;
     private int hitsLeft;
-    Ships fleet;
+    Fleet fleet;
 
     public BattleField() {
 
         this.battleField = fillBattleField(this.battleField);
         this.fogOfWar = fillBattleField(this.fogOfWar);
+        this.toDisplay = fillBattleField(toDisplay);
         this.hitsLeft = 5 + 4 + 3 + 3 + 2;
-        this.fleet = new Ships();
+        this.fleet = new Fleet();
     }
 
     public String[][] getBattleField() {
@@ -40,6 +42,10 @@ public class BattleField {
             A = String.valueOf((char) (A.charAt(0) + 1));
         }
         return battleField;
+    }
+
+    public String[][] getToDisplay() {
+        return toDisplay;
     }
 
     public void inputShip(Scanner scanner, int shipLength) {
@@ -85,6 +91,7 @@ public class BattleField {
         for (int i = startRow; i <= endRow; i++) {
             for (int j = startCol; j <= endCol; j++) {
                 battleField[i][j] = "O";
+                toDisplay[i][j] = "O";
                 shipCoordinates.add(new int[]{i, j});
             }
         }
@@ -133,6 +140,10 @@ public class BattleField {
         return false;
     }
 
+    public Fleet getFleet() {
+        return fleet;
+    }
+
     private boolean coordinatesAreValid(int r, int c) {
         return r >= 1 && r < battleField.length && c >= 1 && c < battleField[0].length;
     }
@@ -161,11 +172,11 @@ public class BattleField {
         return (startRow == endRow && endCol - startCol == shipLength - 1) || (startCol == endCol && endRow - startRow == shipLength - 1);
     }
 
-    private int[] parseCoordinates(String input) {
-        int r = input.charAt(0) - 64;
-        int c = Integer.parseInt(input.substring(1));
-        return new int[]{r, c};
-    }
+//    private int[] parseCoordinates(String input) {
+//        int r = input.charAt(0) - 64;
+//        int c = Integer.parseInt(input.substring(1));
+//        return new int[]{r, c};
+//    }
 
     private int[] parseCoordinates(String[] carrier) {
         int startRow = carrier[0].charAt(0) - 64;
@@ -184,47 +195,52 @@ public class BattleField {
         }
     }
 
-    public void takeAShot(Scanner scanner) {
-
-        String input = scanner.nextLine().toUpperCase(Locale.ROOT);
-        int[] shotCoordinates = parseCoordinates(input);
-        int r = shotCoordinates[0];
-        int c = shotCoordinates[1];
-        if (coordinatesAreValid(r, c)) {
-            if (battleField[r][c].equals("O")) {
-//                battleField[r][c] = "X";
-                fogOfWar[r][c] = "X";
-                this.hitsLeft--;
-                printBattleField(getFogOfWar());
-                if (fleet.isShipSunk(new int[] {r, c})) {
-                    if (fleet.isSunk()) {
-                        System.out.println("You sank the last ship. You won. Congratulations!");
-                    } else {
-                        System.out.println("You sank a ship! Specify a new target:");
-                    }
-                } else {
-                    System.out.println("You hit a ship! Try again:");
-
-                }
-            } else if (battleField[r][c].equals("~")) {
-                battleField[r][c] = "M";
-                fogOfWar[r][c] = "M";
-                printBattleField(getFogOfWar());
-                System.out.println("You missed!");
-                //TODO uncomment these line, after completion of the project,
-                // to unlock new functionality
-                //            } else {
-//                System.out.println("You already shot at these coordinates!");
-//                return false;
-            }
-        } else {
-            System.out.println(("Error! You entered the wrong coordinates! Try again:"));
-            takeAShot(scanner);
-        }
-    }
+//    public void takeAShot(Scanner scanner) {
+//
+//        String input = scanner.nextLine().toUpperCase(Locale.ROOT);
+//        int[] shotCoordinates = parseCoordinates(input);
+//        int r = shotCoordinates[0];
+//        int c = shotCoordinates[1];
+//        if (coordinatesAreValid(r, c)) {
+//            if (battleField[r][c].equals("O")) {
+//                //TODO uncomment these line, after completion of the project,
+//                // to unlock new functionality
+////                battleField[r][c] = "X";
+//                fogOfWar[r][c] = "X";
+//                this.hitsLeft--;
+//                printBattleField(getFogOfWar());
+//                if (fleet.isShipSunk(new int[]{r, c})) {
+//                    if (fleet.isSunk()) {
+//                        System.out.println("You sank the last ship. You won. Congratulations!");
+//                    } else {
+//                        System.out.println("You sank a ship!" + System.lineSeparator() + "Press Enter and pass the move to another player");
+//                    }
+//                } else {
+//                    System.out.println("You hit a ship!" + System.lineSeparator() + "Press Enter and pass the move to another player");
+//
+//                }
+//            } else if (battleField[r][c].equals("~")) {
+//                //TODO uncomment these line, after completion of the project,
+//                // to unlock new functionality
+////                battleField[r][c] = "M";
+//                fogOfWar[r][c] = "M";
+//                printBattleField(getFogOfWar());
+//                System.out.println("You missed!" + System.lineSeparator() + "Press Enter and pass the move to another player");
+//                //TODO uncomment these line, after completion of the project,
+//                // to unlock new functionality
+//
+////                } else {
+////                System.out.println("You already shot at these coordinates!");
+////                return false;
+//            }
+//        } else {
+//            System.out.println(("Error! You entered the wrong coordinates! Try again:"));
+//            takeAShot(scanner);
+//        }
+//    }
 
     public boolean isGameOver() {
-        return this.hitsLeft <= 0;
+        return this.fleet.isSunk();
     }
 
 }
