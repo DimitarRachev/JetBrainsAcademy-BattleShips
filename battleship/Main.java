@@ -11,7 +11,7 @@ public class Main {
         Game game = new Game();
 
         game.inputShips(scanner);
-//        System.out.println("The game starts!");
+;
 
         while (true) {
             try {
@@ -24,11 +24,7 @@ public class Main {
 
 
 
-//        battleField.printBattleField(battleField.getFogOfWar());
-//        System.out.println("Take a shot!");
-//        while (!battleField.isGameOver()) {
-//            battleField.takeAShot(scanner);
-//        }
+
 
 
     }

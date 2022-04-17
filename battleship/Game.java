@@ -18,7 +18,7 @@ public class Game {
     void turn(Scanner scanner) throws GameOverException {
         player1.printBattleField(player2.getBattleField().getFogOfWar());
         System.out.println("---------------------");
-        player2.printBattleField(player1.getBattleField().getToDisplay());
+        player2.printBattleField(player1.getBattleField().getBattleField());
         System.out.println("Player 1, it's your turn:");
         String input = scanner.nextLine().toUpperCase(Locale.ROOT);
         try {
@@ -26,11 +26,11 @@ public class Game {
         } catch (GameOverException e) {
             throw new GameOverException("Congrats Player 1 " + e.getMessage());
         }
-        promptEnterKey(scanner);
+        promptEnterKey();
         clearScreen();
         player1.printBattleField(player1.getBattleField().getFogOfWar());
         System.out.println("---------------------");
-        player2.printBattleField(player2.getBattleField().getToDisplay());
+        player2.printBattleField(player2.getBattleField().getBattleField());
         System.out.println("Player 2, it's your turn:");
         input = scanner.nextLine().toUpperCase(Locale.ROOT);
         try {
@@ -38,7 +38,7 @@ public class Game {
         } catch (GameOverException e) {
             throw new GameOverException("Congrats Player 2 " + e.getMessage());
         }
-        promptEnterKey(scanner);
+        promptEnterKey();
         clearScreen();
     }
 
@@ -46,12 +46,12 @@ public class Game {
         System.out.println("Player 1, place your ships on the game field");
         player1.printBattleField(player1.getBattleField().getBattleField());
         placeShips(scanner, player1.getBattleField());
-        promptEnterKey(scanner);
+        promptEnterKey();
         clearScreen();
         System.out.println("Player 2, place your ships on the game field");
         player2.printBattleField(player2.getBattleField().getBattleField());
         placeShips(scanner, player2.getBattleField());
-        promptEnterKey(scanner);
+        promptEnterKey();
         clearScreen();
     }
 
@@ -92,14 +92,13 @@ public class Game {
         }
     }
 
-    private void promptEnterKey(Scanner scanner) {
+    private void promptEnterKey() {
         System.out.println("Press Enter and pass the move to another player");
-//        try {
-//            System.in.read();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-        String not = scanner.nextLine();
+        try {
+            System.in.read();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void clearScreen() {
@@ -122,15 +121,11 @@ public class Game {
         int c = shotCoordinates[1];
         if (coordinatesAreValid(r, c, battleField)) {
             if (battleField.getBattleField()[r][c].equals("O")) {
-                //TODO uncomment these line, after completion of the project,
-                // to unlock new functionality
 
 
-//                battleField[r][c] = "X";
+                battleField.getBattleField()[r][c] = "X";
                 battleField.getFogOfWar()[r][c] = "X";
                 battleField.getToDisplay()[r][c] = "X";
-//                this.hitsLeft--;
-//                printBattleField(battleField.getFogOfWar());
                 if (battleField.fleet.isShipSunk(new int[]{r, c})) {
                     if (battleField.getFleet().isSunk()) {
                         System.out.println("You sank the last ship. You won. Congratulations!");
@@ -143,23 +138,18 @@ public class Game {
 
                 }
             } else if (battleField.getBattleField()[r][c].equals("~")) {
-                //TODO uncomment these line, after completion of the project,
-                // to unlock new functionality
-//                battleField[r][c] = "M";
+
+                battleField.getBattleField()[r][c] = "M";
                 battleField.getFogOfWar()[r][c] = "M";
                 battleField.getToDisplay()[r][c] = "M";
-//                printBattleField(battleField.getFogOfWar());
                 System.out.println("You missed!");
-                //TODO uncomment these line, after completion of the project,
-                // to unlock new functionality
 
-//                } else {
-//                System.out.println("You already shot at these coordinates!");
-//                return false;
+
+            } else {
+                System.out.println("You already shot at these coordinates!");
             }
-//        } else {
-//            System.out.println(("Error! You entered the wrong coordinates! Try again:"));
-//            takeAShot(scanner);
+        } else {
+            System.out.println(("Error! You entered the wrong coordinates! You have missed your turn!"));
         }
     }
 
