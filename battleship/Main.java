@@ -11,7 +11,6 @@ public class Main {
         Game game = new Game();
 
         game.inputShips(scanner);
-;
 
         while (true) {
             try {
@@ -21,14 +20,6 @@ public class Main {
                 return;
             }
         }
-
-
-
-
-
-
     }
-
-
 }
 

@@ -10,7 +10,7 @@ public class Fleet {
         this.ships = new HashSet<>();
     }
 
-    void addShip(Ship ship){
+    void addShip(Ship ship) {
         ships.add(ship);
     }
 
@@ -24,7 +24,7 @@ public class Fleet {
         return false;
     }
 
-    boolean isSunk(){
+    boolean isSunk() {
         return ships.isEmpty();
     }
 }

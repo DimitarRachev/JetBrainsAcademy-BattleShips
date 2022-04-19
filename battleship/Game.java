@@ -106,10 +106,6 @@ public class Game {
         System.out.flush();
     }
 
-    boolean isOver() {
-        return player1.isGameOver() || player2.isGameOver();
-    }
-
     private int[] parseCoordinates(String input) {
         int r = input.charAt(0) - 64;
         int c = Integer.parseInt(input.substring(1));
@@ -121,8 +117,6 @@ public class Game {
         int c = shotCoordinates[1];
         if (coordinatesAreValid(r, c, battleField)) {
             if (battleField.getBattleField()[r][c].equals("O")) {
-
-
                 battleField.getBattleField()[r][c] = "X";
                 battleField.getFogOfWar()[r][c] = "X";
                 battleField.getToDisplay()[r][c] = "X";
@@ -135,16 +129,12 @@ public class Game {
                     }
                 } else {
                     System.out.println("You hit a ship!");
-
                 }
             } else if (battleField.getBattleField()[r][c].equals("~")) {
-
                 battleField.getBattleField()[r][c] = "M";
                 battleField.getFogOfWar()[r][c] = "M";
                 battleField.getToDisplay()[r][c] = "M";
                 System.out.println("You missed!");
-
-
             } else {
                 System.out.println("You already shot at these coordinates!");
             }

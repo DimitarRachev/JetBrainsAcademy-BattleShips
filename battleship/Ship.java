@@ -3,14 +3,14 @@ package battleship;
 import java.util.Set;
 
 public class  Ship {
-    Set<int[]> shipLegth;
+    Set<int[]> shipLength;
 
-    public Ship(Set<int[]> shipLegth) {
-        this.shipLegth = shipLegth;
+    public Ship(Set<int[]> shipLength) {
+        this.shipLength = shipLength;
     }
 
     public boolean isSunk(int[] coordinates) {
-        shipLegth.removeIf(ints -> ints[0] == coordinates[0] && ints[1] == coordinates[1]);
-        return this.shipLegth.isEmpty();
+        shipLength.removeIf(ints -> ints[0] == coordinates[0] && ints[1] == coordinates[1]);
+        return this.shipLength.isEmpty();
     }
 }
