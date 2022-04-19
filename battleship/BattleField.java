@@ -3,22 +3,23 @@ package battleship;
 import battleship.CustomExeptions.ShipPlacedTooCloseExeption;
 import battleship.CustomExeptions.WhrongShipLocationExeption;
 import battleship.CustomExeptions.WrongShipLengthExeption;
+
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Scanner;
 import java.util.Set;
 
 public class BattleField {
-    private String[][] battleField;
-    private String[][] fogOfWar;
-    private String[][] toDisplay;
+    private final String[][] battleField;
+    private final String[][] fogOfWar;
+    private final String[][] toDisplay;
     Fleet fleet;
 
     public BattleField() {
 
-        this.battleField = fillBattleField(this.battleField);
-        this.fogOfWar = fillBattleField(this.fogOfWar);
-        this.toDisplay = fillBattleField(toDisplay);
+        this.battleField = fillBattleField();
+        this.fogOfWar = fillBattleField();
+        this.toDisplay = fillBattleField();
         this.fleet = new Fleet();
     }
 
@@ -30,8 +31,8 @@ public class BattleField {
         return fogOfWar;
     }
 
-    private String[][] fillBattleField(String[][] battleField) {
-        battleField = new String[11][11];
+    private String[][] fillBattleField() {
+        String[][] battleField = new String[11][11];
         battleField[0] = new String[]{" ", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
         String A = "A";
         for (int i = 1; i < battleField.length; i++) {
@@ -64,10 +65,10 @@ public class BattleField {
     }
 
     private void placeShip(Scanner scanner, int shipLength) throws WrongShipLengthExeption, WhrongShipLocationExeption, ShipPlacedTooCloseExeption {
-        String[] ship = scanner.nextLine().toUpperCase(Locale.ROOT).split("\\s+");
+        String[] shipLocation = scanner.nextLine().toUpperCase(Locale.ROOT).split("\\s+");
 
-        ship = sortShip(ship);
-        int[] coordinates = parseCoordinates(ship);
+        sortShipLocation(shipLocation);
+        int[] coordinates = parseCoordinates(shipLocation);
         if (!coordinatesAreValid(coordinates)) {
             throw new ArrayIndexOutOfBoundsException("Error! Ship indexes should be inside the battlefield! Try again:");
         }
@@ -95,18 +96,17 @@ public class BattleField {
         fleet.addShip(new Ship(shipCoordinates));
     }
 
-    private String[] sortShip(String[] carrier) {
-        int[] coordinates = parseCoordinates(carrier);
+    private void sortShipLocation(String[] shipLocation) {
+        int[] coordinates = parseCoordinates(shipLocation);
         int startRow = coordinates[0];
         int startCol = coordinates[1];
         int endRow = coordinates[2];
         int endCol = coordinates[3];
         if (endCol < startCol || endRow < startRow) {
-            String temp = carrier[0];
-            carrier[0] = carrier[1];
-            carrier[1] = temp;
+            String temp = shipLocation[0];
+            shipLocation[0] = shipLocation[1];
+            shipLocation[1] = temp;
         }
-        return carrier;
     }
 
     private boolean shipIsNextToAnother(int[] coordinates) {
@@ -178,16 +178,11 @@ public class BattleField {
     }
 
     public void printBattleField(String[][] battleField) {
-        for (int i = 0; i < battleField.length; i++) {
-            for (int j = 0; j < battleField[i].length; j++) {
-                System.out.print(battleField[i][j] + " ");
+        for (String[] strings : battleField) {
+            for (String string : strings) {
+                System.out.print(string + " ");
             }
             System.out.println();
         }
     }
-
-    public boolean isGameOver() {
-        return this.fleet.isSunk();
-    }
-
 }
